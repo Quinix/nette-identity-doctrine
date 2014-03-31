@@ -2,6 +2,7 @@
 
 namespace Majkl578\NetteAddons\Doctrine2Identity\Http;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Majkl578\NetteAddons\Doctrine2Identity\Security\FakeIdentity;
 use Nette\Http\Session;
@@ -13,14 +14,14 @@ use Nette\Security\IIdentity;
  */
 class UserStorage extends NetteUserStorage
 {
-	/** @var EntityManager */
-	private $entityManager;
+	/** @var DocumentManager */
+	private $documentManager;
 
-	public function  __construct(Session $sessionHandler, EntityManager $entityManager)
+	public function  __construct(Session $sessionHandler, DocumentManager $documentManager)
 	{
 		parent::__construct($sessionHandler);
 
-		$this->entityManager = $entityManager;
+		$this->documentManager = $documentManager;
 	}
 
 	/**
@@ -36,9 +37,9 @@ class UserStorage extends NetteUserStorage
 			// so only the identifier fields are stored,
 			// but we are only interested in identities which are correctly
 			// mapped as doctrine entities
-			if ($this->entityManager->getMetadataFactory()->hasMetadataFor($class)) {
-				$cm = $this->entityManager->getClassMetadata($class);
-				$identifier = $cm->getIdentifierValues($identity);
+			if ($this->documentManager->getMetadataFactory()->hasMetadataFor($class)) {
+				$cm = $this->documentManager->getClassMetadata($class);
+				$identifier = $cm->getIdentifierValue($identity);
 				$identity = new FakeIdentity($identifier, $class);
 			}
 		}
@@ -58,7 +59,7 @@ class UserStorage extends NetteUserStorage
 		// convert it back into the real entity
 		// returning reference provides potentially lazy behavior
 		if ($identity instanceof FakeIdentity) {
-			return $this->entityManager->getReference($identity->getClass(), $identity->getId());
+			return $this->documentManager->getReference($identity->getClass(), $identity->getId());
 		}
 
 		return $identity;
