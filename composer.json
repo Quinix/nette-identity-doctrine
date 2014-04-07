@@ -1,18 +1,21 @@
 {
-	"name": "majkl578/nette-identity-doctrine",
+	"name": "quinix/nette-identity-mongo-odm",
 	"type": "nette-addon",
-	"keywords": ["nette", "doctrine", "orm", "security", "identity", "authentication"],
+	"keywords": ["nette", "doctrine", "mongodb", "odm", "security", "identity", "authentication"],
 	"authors": [
 		{
 			"name": "Michael Moravec"
-		}
+		},
+        {
+            "name": "Jan Langer"
+        }
 	],
-	"description": "Integration of entities implementing IIdentity in Nette 2",
+	"description": "Integration of Doctrine MongoDB ODM entities implementing IIdentity in Nette 2",
 	"license": "MIT",
 	"require": {
 		"php": ">=5.3.2",
 		"nette/nette": "~2.0",
-		"doctrine/mongodb-odm": "~1.0"
+		"doctrine/mongodb-odm": "~1.0@beta"
 	},
 	"autoload": {
 		"psr-0": {
